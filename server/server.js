@@ -25,10 +25,17 @@ async function main() {
 
 /* USER SCHEMA AND MODEL */
 const userSchema = new mongoose.Schema({
-    // Username and password
-    username: String,
-    password: String,
-    email: String
+    username: { type: String, required: true },
+    password: { type: String, required: true },
+    email: { type: String, required: true },
+    
+    events: [{
+        name: { type: String, required: true },
+        address: { type: String, required: true },
+        distance: { type: Number, required: true },
+        transportation: { type: String, required: true },
+        carbonOffset: { type: Number, required: true },
+      }]
 });
 
 const User = mongoose.model("user", userSchema);
@@ -52,7 +59,8 @@ app.post("/create-user/:username/:password/:email", async function(req, res) {
     const newUser = new User({
         username: req.params.username,
         password: req.params.password,
-        email: req.params.email
+        email: req.params.email,
+
     })
     
     try {
