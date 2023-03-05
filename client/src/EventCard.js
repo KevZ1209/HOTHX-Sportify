@@ -3,9 +3,6 @@ import "./EventCard.css"
 
 
 function EventCard(props) {
-    
-
-
     return (
     <div className="eventCardContainer"> 
         <div className="eventAttributesContainer">

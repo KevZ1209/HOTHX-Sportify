@@ -1,11 +1,23 @@
+
+.pageInput {
+    display: flex;
+    align-items: center;
+}
+
 .homeBoxElement {
     margin-bottom: 0px;
     color: var(--main-color);
     width: 100%;
+    margin-bottom: 10px;
 }
 
 .homeBox {
     margin-bottom: 10px;
     display: inline-block;
-    margin-right: 100px;
+    margin-right: 300px;
+}
+
+.textAndButton {
+    width: 100%;
+    display: inline-block;
 }
