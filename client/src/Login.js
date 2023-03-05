@@ -59,6 +59,7 @@ function LoginPage() {
                 id="password"
                 name="password"
                 onChange={e => setPassword(e.target.value)}
+                className="loginElement"
             />
         </div>
         {isRegistering && (
@@ -69,16 +70,17 @@ function LoginPage() {
                     id="username"
                     name="username"
                     onChange={e => setUsername(e.target.value)}
+                    className="loginElement"
                 />
             </div>)}
         <div className="loginBox">
             {isRegistering ?
-                <button onClick={register} disabled={email === "" || password === "" || username === ""}>Register</button> :
-                <button onClick={login} disabled={email === "" || password === ""}>Login</button>
+                <button onClick={register} disabled={email === "" || password === "" || username === ""} className="loginElement">Register</button> :
+                <button onClick={login} disabled={email === "" || password === ""} className="loginElement">Login</button>
             }    
         </div>
         <div>
-            <button onClick={e => setIsRegistering(!isRegistering)}>{isRegistering ? "Already have an account? Click here to login" : "Don't have an account? Click here to register"}</button>
+            <button onClick={e => setIsRegistering(!isRegistering)} className="loginElement">{isRegistering ? "Already have an account? Click here to login" : "Don't have an account? Click here to register"}</button>
         </div>
     </div>
     );

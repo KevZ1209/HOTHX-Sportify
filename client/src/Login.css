@@ -1,5 +1,6 @@
 .loginElement {
   margin-bottom: 0px;
+  color: var(--main-color)
 }
 
 .loginBox {
