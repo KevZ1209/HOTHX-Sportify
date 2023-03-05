@@ -1,0 +1,11 @@
+.homeBoxElement {
+    margin-bottom: 0px;
+    color: var(--main-color);
+    width: 100%;
+}
+
+.homeBox {
+    margin-bottom: 10px;
+    display: inline-block;
+    margin-right: 100px;
+}

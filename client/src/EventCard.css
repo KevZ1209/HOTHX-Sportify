@@ -1,0 +1,75 @@
+
+
+.eventCardContainer {
+    border: 1px solid var(--main-color);
+    margin-bottom: 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    width: 700px;
+}
+.eventAttributesContainer {
+    display: inline-block;
+    margin: 20px;
+    /* border: 1px solid blue; */
+}
+
+.emissionsContainer {
+    display: inline-block;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: auto; 
+    margin-right: 0;
+    /* border: 1px solid blue; */
+}
+
+.transportationContainer > * {
+    display: inline-block;
+    margin-right: 10px;
+    /* border: 1px solid pink; */
+}
+
+.transportationContainer {
+    /* border: 1px solid red; */
+    align-items: center;
+    display: flex;
+    margin-bottom: 2px;
+    margin-top: 2px;
+}
+
+.attributeLabel {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.colorCircle {
+    height: 20px;
+    width: 20px;
+    border-radius: 10px;
+}
+
+#walkCircle {
+    background-color: greenyellow;
+}
+
+#transportCircle {
+    background-color: green;
+}
+
+#carpoolCircle {
+    background-color: yellow;
+}
+
+#carCircle {
+    background-color: orange;
+}
+
+#planeCircle {
+    background-color: red;
+}
+
+.emissionLabel {
+    margin-left: auto; 
+    padding-left: 10px;
+    margin-right: 10px;
+}

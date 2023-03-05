@@ -36,7 +36,7 @@ function App() {
           style={{ textDecoration: "none", marginRight: "0.5rem" }}
           className="navButton"
         >
-          <div>Log in</div>
+          <div>Login</div>
         </NavLink>
       </div>
       <Routes>
