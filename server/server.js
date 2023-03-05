@@ -23,19 +23,27 @@ async function main() {
 
 /* ***************** SCHEMAS AND MODELS ***************** */
 
+/* EVENT SCHEMA AND MODEL */
+const eventSchema = new mongoose.Schema({
+        name: { type: String, required: true },
+        address: { type: String, required: true },
+})
+
+const Event = mongoose.model("event", eventSchema);
+
+
 /* USER SCHEMA AND MODEL */
 const userSchema = new mongoose.Schema({
     username: { type: String, required: true },
     password: { type: String, required: true },
     email: { type: String, required: true },
-    
     events: [{
-        name: { type: String, required: true },
-        address: { type: String, required: true },
-        distance: { type: Number, required: true },
-        transportation: { type: String, required: true },
-        carbonOffset: { type: Number, required: true },
-      }]
+        name: String,
+        address: String,
+        transportation: String,
+        carbonOffset: Number,
+        distance: Number
+    }]
 });
 
 const User = mongoose.model("user", userSchema);
@@ -60,7 +68,7 @@ app.post("/create-user/:username/:password/:email", async function(req, res) {
         username: req.params.username,
         password: req.params.password,
         email: req.params.email,
-
+        events: []
     })
     
     try {
@@ -107,6 +115,31 @@ app.post("/check-password/:username/:password", async function(req, res) {
     
 })
 
+/* EVENT API */
+app.get("/get-all-events", async function(req, res) {
+    try {
+        const events = await Event.find()
+        res.send(events);
+    } catch (error) {
+        res.send(error);
+    }
+})
+
+app.post("/add-event/:name/:address", async function(req, res) {
+    const newEvent = {
+        name: req.params.name,
+        address: req.params.address,
+    }
+    try {
+        newEvent.save()
+        res.send(true)
+    }
+    catch(error) {
+        res.send(error)
+    }
+    
+
+})
 
 app.listen(8000, function(req, res) {
     console.log("Listening on port 8000")
