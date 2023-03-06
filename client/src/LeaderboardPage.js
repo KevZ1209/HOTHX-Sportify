@@ -108,7 +108,7 @@ function LeaderboardPage() {
     useEffect(() => {
         sortBy('ratio');
         setSortStatus(0);
-      }, []);
+      }, [leaderboardList]);
 
     return (
     <div id="leaderboard">
