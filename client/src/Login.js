@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
+import UserContext from "./UserContext";
 import "./Login.css"
-// import axios from "axios";
+import axios from "axios";
 
 function LoginPage() {
     const [email, setEmail] = useState("");
@@ -8,13 +9,20 @@ function LoginPage() {
     const [username, setUsername] = useState("");
     const [isRegistering, setIsRegistering] = useState(false);
     const [error, setError] = useState();
+    const { setCurrentUsername } = useContext(UserContext);
+
 
     const register = async (e) => {
         e.preventDefault();
         try {
-            const newUser = { email, password, username };
-            console.log(newUser);
-        //   await axios.post("http://localhost:5000/users/register", newUser);
+            console.log(username, password, email);
+            const result = await axios.post("http://localhost:8000/create-user/"+username+"/"+password+"/"+email);
+            if(!result.data) {
+                alert("Username already exists!")
+            }
+            else {
+                setIsRegistering(false)
+            }
         } catch (err) {
             err.response.data.msg && setError(err.response.data.msg);
         }
@@ -23,16 +31,14 @@ function LoginPage() {
     const login = async (e) => {
         e.preventDefault();
         try {
-            const loginUser = { email, password };
-        //   const loginResponse = await axios.post(
-        //     "http://localhost:5000/users/login",
-        //     loginUser
-        //   );
-        //   setUserData({
-        //     token: loginResponse.data.token,
-        //     user: loginResponse.data.user,
-        //   });
-            console.log(loginUser)
+            const result = await axios.post("http://localhost:8000/check-password/"+username+"/"+password);
+            if(!result.data) {
+                alert("Username or password incorrect!")
+            }
+            else {
+                console.log("Logged in!")
+                setCurrentUsername(username)
+            }
         } catch (err) {
             err.response.data.msg && setError(err.response.data.msg);
         }
@@ -43,13 +49,13 @@ function LoginPage() {
     <div>
         <h1>Login Page!</h1>
         <div className="loginBox">
-            <p className="loginElement">Email</p>
+            <p className="loginElement">Username</p>
             <input
-                className="loginElement"
                 type="text"
-                id="email"
-                name="email"
-                onChange={e => setEmail(e.target.value)}
+                id="username"
+                name="username"
+                onChange={e => setUsername(e.target.value)}
+                className="loginElement"
             />
         </div>
         <div className="loginBox">
@@ -64,19 +70,20 @@ function LoginPage() {
         </div>
         {isRegistering && (
             <div className="loginBox">
-                <p className="loginElement">Username</p>
+                <p className="loginElement">Email</p>
                 <input
-                    type="text"
-                    id="username"
-                    name="username"
-                    onChange={e => setUsername(e.target.value)}
                     className="loginElement"
+                    type="text"
+                    id="email"
+                    name="email"
+                    onChange={e => setEmail(e.target.value)}
                 />
-            </div>)}
+            </div>
+        )}
         <div className="loginBox">
             {isRegistering ?
                 <button onClick={register} disabled={email === "" || password === "" || username === ""} className="loginElement">Register</button> :
-                <button onClick={login} disabled={email === "" || password === ""} className="loginElement">Login</button>
+                <button onClick={login} disabled={username === "" || password === ""} className="loginElement">Login</button>
             }    
         </div>
         <div>
