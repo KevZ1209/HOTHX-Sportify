@@ -31,9 +31,12 @@ function HomePage() {
     useEffect(()=>{
         async function fetchData() {
             if(userLocation && allEvents){
-                // console.log("API_KEY", API_KEY);
-                // const result = await axios.get("https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins="+userLocation.replace(/ /g,"+")+"&destinations="+allEvents[0].address.replace(/ /g,"+")+"&key="+API_KEY)
-                // console.log(result);
+                console.log("*****");
+                const result = await axios.post("http://localhost:8000/calculate-distance", {
+                    "origin": userLocation,
+                    "dest": allEvents[0].address
+                })
+                console.log(result);
             }
         }
         fetchData();

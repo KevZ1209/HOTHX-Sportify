@@ -185,6 +185,29 @@ app.post("/add-event-to-user", async function(req, res) {
   })
   
 
+
+  app.post("/calculate-distance", async function(req, res) {
+
+    const origin = req.body.origin.replace(/ /g,"+")
+    const dest = req.body.dest.replace(/ /g,"+")
+
+    const result = await axios.get("https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins="+origin+"&destinations="+dest+"&key="+API_KEY.API_KEY)
+    console.log(result.data.rows[0].elements[0]);
+
+
+    try {
+        res.send(result.data.rows[0].elements[0].distance.value)
+    }
+    catch(error) {
+        res.send(error)
+    }
+
+})
+
 app.listen(8000, function(req, res) {
     console.log("Listening on port 8000")
 })
+
+
+
+// 
