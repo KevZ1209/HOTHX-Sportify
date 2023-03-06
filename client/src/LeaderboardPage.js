@@ -15,7 +15,7 @@ function LeaderboardPage() {
         }
         fetchData();
     }, []);
-    
+
     var [sortByType, setSortByType] = useState("ratio");
     var [sortStatus, setSortStatus] = useState(0);
 

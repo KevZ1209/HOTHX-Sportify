@@ -50,7 +50,7 @@ function LoginPage() {
 
     return (
     <div>
-        <h1>Login Page!</h1>
+        <h1>Login Page</h1>
         {currentUsername ? (
             <>
                 <div className="loginBox">
