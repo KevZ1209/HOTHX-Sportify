@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import UserContext from "./UserContext";
 import "./Login.css"
 import axios from "axios";
@@ -11,6 +11,9 @@ function LoginPage() {
     const [error, setError] = useState();
     const { currentUsername, setCurrentUsername } = useContext(UserContext);
 
+    /* DEBUG */
+    useEffect(() => setCurrentUsername("charles"))
+    /* DEBUG */
 
     const register = async (e) => {
         e.preventDefault();

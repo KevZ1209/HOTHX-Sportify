@@ -1,5 +1,6 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import EventCard from "./EventCard";
+import axios from "axios";
 import "./HomePage.css"
 
 
@@ -7,7 +8,8 @@ import "./HomePage.css"
 function HomePage() {
     const [userLocation, setUserLocation] = useState("");
     const [enteredLocation, setEnteredLocation] = useState("");
-    const [closestEvents, setClosestEvents] = useState([1,2]);
+    const [allEvents, setAllEvents] = useState([]);
+    const [closestEvents, setClosestEvents] = useState([]);
 
     const [enteredEventAddress, setEnteredEventAddress] = useState("");
     const [enteredEventName, setEnteredEventName] = useState("");
@@ -15,6 +17,22 @@ function HomePage() {
 
     const [calculatingDistances, setCalculatingDistances] = useState(false)
 
+    useEffect(() => {
+        async function fetchData() {
+            const result = await axios.get("http://localhost:8000/get-all-events");
+            console.log(result);
+            if(result.data) {
+                setAllEvents(result.data);
+            }
+        }
+        fetchData();
+    }, [])
+
+    // useEffect(async ()=>{
+    //     if(userLocation && allEvents){
+            
+    //     }
+    // },[allEvents, userLocation])
 
     return (
     <div>
@@ -68,9 +86,9 @@ function HomePage() {
             </div>
         </div>
         
-        {enteredEvent && (<EventCard name={enteredEvent.name} address={enteredEvent.address} going={false}/>)}
-        {closestEvents && closestEvents.map(element => {
-            return (<EventCard name="Indian Wells" address="1 goat St, Palm Spring" going={false}/>)
+        {enteredEvent && (<EventCard name={enteredEvent.name} address={enteredEvent.address} going={false} distance={1000}/>)}
+        {allEvents && allEvents.map(element => {
+            return (<EventCard name={element.name} address={element.address} going={false} distance={1000}/>)
         })}
     </div>
     );

@@ -8,7 +8,7 @@ function EventCard(props) {
         <div className="eventAttributesContainer">
             <div className="attributeLabel">{props.name}</div>
             <div className="attributeLabel">{props.address}</div>
-            <div className="attributeLabel">{1000} miles away</div>
+            <div className="attributeLabel">{props.distance} miles away</div>
             <button onClick={e => console.log("Pressed going button!")} className="loginElement">{props.going ? "Not going" : "I'm going!"}</button>
         </div>
         <div className="emissionsContainer">
