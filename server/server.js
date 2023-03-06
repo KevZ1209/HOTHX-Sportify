@@ -4,6 +4,8 @@ const app = express()
 const cors = require('cors')
 const bcrypt = require('bcrypt');
 const dotenv = require('dotenv')
+const axios = require('axios')
+const API_KEY = require("./API_KEY");
 
 dotenv.config()
 
@@ -70,7 +72,7 @@ app.post("/create-user/:username/:password/:email", async function(req, res) {
         email: req.params.email,
         events: []
     })
-    
+
     try {
         let foundUser = await User.findOne({username: req.params.username})
         if (foundUser == null) {

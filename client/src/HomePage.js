@@ -28,11 +28,16 @@ function HomePage() {
         fetchData();
     }, [])
 
-    // useEffect(async ()=>{
-    //     if(userLocation && allEvents){
-            
-    //     }
-    // },[allEvents, userLocation])
+    useEffect(()=>{
+        async function fetchData() {
+            if(userLocation && allEvents){
+                // console.log("API_KEY", API_KEY);
+                // const result = await axios.get("https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins="+userLocation.replace(/ /g,"+")+"&destinations="+allEvents[0].address.replace(/ /g,"+")+"&key="+API_KEY)
+                // console.log(result);
+            }
+        }
+        fetchData();
+    },[allEvents, userLocation])
 
     return (
     <div>
