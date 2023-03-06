@@ -49,6 +49,7 @@ function EventCard(props) {
 
             const result = await axios.post("http://localhost:8000/add-event-to-user", {
                 eventName: props.name,
+                eventAddress: props.address,
                 username: currentUsername,
                 transportation: transportation,
                 carbonOffset: carbonOffset,
