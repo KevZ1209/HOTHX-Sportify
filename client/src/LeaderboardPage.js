@@ -2,142 +2,139 @@ import React, { useEffect, useState } from "react";
 import "./LeaderboardPage.css";
 
 function LeaderboardPage() {
-    var leaderboardList = [];
+    var [leaderboardList, setLeaderboardList] = useState([
+        {
+         username: "marcus",
+         email: "marcus@gmail.com",
+         password: "123456",
+         events: [
+             {
+                 name: "Indian Wells",
+                 address: "Indian Wells, CA",
+                 transportation: "carpool",
+                 carbonOffset: 200.0,
+                 distance: 93
+             },
+             {
+                 name: "Billy Joel Concert",
+                 address: "Sofi Stadium, Los Angeles",
+                 transportation: "plane",
+                 carbonOffset: 1000.0,
+                 distance: 10
+             }
+         ]
+        },
+        {
+         username: "kevin",
+         email: "kevin@gmail.com",
+         password: "123456",
+         events: [
+             {
+                 name: "Indian Wells",
+                 address: "Indian Wells, CA",
+                 transportation: "carpool",
+                 carbonOffset: 200.0,
+                 distance: 93
+             },
+             {
+                 name: "US Open",
+                 address: "Flushing Meadows, NY",
+                 transportation: "walk",
+                 carbonOffset: 10.0,
+                 distance: 1000
+             }
+         ]
+        },
+        {
+         username: "charles",
+         email: "charles@gmail.com",
+         password: "123456",
+         events: [
+             {
+                 name: "Wimbledon",
+                 address: "Wimbledon, UK",
+                 transportation: "plane",
+                 carbonOffset: 10000.0,
+                 distance: 6000
+             },
+             {
+                 name: "San Diego Open",
+                 address: "San Diego, CA",
+                 transportation: "public",
+                 carbonOffset: 10.0,
+                 distance: 200
+             }
+         ]
+        }
+     ]);
     var [sortByType, setSortByType] = useState("ratio");
     var [sortStatus, setSortStatus] = useState(0);
 
     function orderBy(prop, largest) {
-        for(var i = 0; i < leaderboardList.length - 1; i++) {
+        console.log(leaderboardList);
+        for(var i = 0; i < leaderboardList.length-1; i++) {
+            var changeValue;
             var changeIndex = i;
-            if(prop == "miles") {
-                var changeValue = getTotalMiles(leaderboardList[i]);
-            } else if(prop == "emissions") {
-                var changeValue = getTotalEmissions(leaderboardList[i]);
+            if(prop === "miles") {
+                changeValue = getTotalMiles(leaderboardList[i]);
+            } else if(prop === "emissions") {
+                changeValue = getTotalEmissions(leaderboardList[i]);
             } else {
-                var changeValue = getRatio(leaderboardList[i]);
+                changeValue = getRatio(leaderboardList[i]);
             }
             for(var j = i+1; j < leaderboardList.length; j++) {
-              if(largest == 0) {
-                if(leaderboardList[j].emissions > changeValue) {
-                    if(prop == "miles") {
-                        var changeValue = getTotalMiles(leaderboardList[j]);
-                    } else if(prop == "emissions") {
-                        var changeValue = getTotalEmissions(leaderboardList[j]);
-                    } else {
-                        var changeValue = getRatio(leaderboardList[j]);
+              if(largest === 0) {
+                    if(prop === "miles" && getTotalMiles(leaderboardList[j]) > changeValue) {
+                        changeValue = getTotalMiles(leaderboardList[j]);
+                        changeIndex = j;
+                    } else if(prop === "emissions" &&  getTotalEmissions(leaderboardList[j]) > changeValue) {
+                        changeValue = getTotalEmissions(leaderboardList[j]);
+                        changeIndex = j;
+                        console.log("bye");
+                    } else if(prop === "ratio" &&  getRatio(leaderboardList[j]) > changeValue) {
+                        console.log(390423);
+                        changeValue = getRatio(leaderboardList[j]);
+                        changeIndex = j;
                     }
-                    changeIndex = j;
-                  }
               } else {
-                if(leaderboardList[j].emissions < changeValue) {
-                    if(prop == "miles") {
-                        var changeValue = getTotalMiles(leaderboardList[j]);
-                    } else if(prop == "emissions") {
-                        var changeValue = getTotalEmissions(leaderboardList[j]);
-                    } else {
-                        var changeValue = getRatio(leaderboardList[j]);
+                    if(prop === "miles" && getTotalMiles(leaderboardList[j]) < changeValue) {
+                        changeValue = getTotalMiles(leaderboardList[j]);
+                        changeIndex = j;
+                    } else if(prop === "emissions" &&  getTotalEmissions(leaderboardList[j]) < changeValue) {
+                        changeValue = getTotalEmissions(leaderboardList[j]);
+                        changeIndex = j;
+                    } else if(prop === "ratio" &&  getRatio(leaderboardList[j]) < changeValue) {
+                        changeValue = getRatio(leaderboardList[j]);
+                        changeIndex = j;
                     }
-                    changeIndex = j;
-                  }
               }
             }
+            /*var listCopy = [];
             var temp = changeValue;
-            leaderboardList[changeIndex] = leaderboardList[i];
-            leaderboardList[i] = temp;
+            for(var j = 0; j < leaderboardList.length; j++) {
+                if(j === i) {
+                  listCopy.push(temp);
+                } else if(j === changeIndex) {
+                    listCopy.push(leaderboardList[i]);
+                } else {
+                    listCopy.push(leaderboardList[j]);
+                }
+            }
+            setLeaderboardList(listCopy);*/
+            var temp = changeValue;
+            var listCopy = JSON.parse(JSON.stringify(leaderboardList));
+            listCopy[changeIndex] = listCopy[i];
+            listCopy[i] = temp;
+            setLeaderboardList(listCopy);
         }
     }
-    
-    /*function sortByEmissions(descending) {
-        for(var i = 0; i < leaderboardList.length - 1; i++) {
-            var changeIndex = i;
-            var changeValue = getEmissions(leaderboardList[i]);
-            for(var j = i+1; j < leaderboardList.length; j++) {
-              if(descending) {
-                if(leaderboardList[j].emissions > changeValue) {
-                    changeValue = getEmissions(leaderboardList[j]);
-                    changeIndex = j;
-                  }
-              } else {
-                if(leaderboardList[j].emissions < changeValue) {
-                    changeValue = getEmissions(leaderboardList[j]);
-                    changeIndex = j;
-                  }
-              }
-            }
-            var temp = changeValue;
-            leaderboardList[changeIndex] = leaderboardList[i];
-            leaderboardList[i] = temp;
-        }
-    }
-
-    function sortByMiles(descending) {
-        for(var i = 0; i < leaderboardList.length - 1; i++) {
-            var changeIndex = i;
-            var changeValue = getMiles(leaderboardList[i]);
-            for(var j = i+1; j < leaderboardList.length; j++) {
-              if(descending) {
-                if(leaderboardList[j].emissions > changeValue) {
-                    changeValue = getMiles(leaderboardList[j]);
-                    changeIndex = j;
-                  }
-              } else {
-                if(leaderboardList[j].emissions < changeValue) {
-                    changeValue = getMiles(leaderboardList[j]);
-                    changeIndex = j;
-                  }
-              }
-            }
-            var temp = changeValue;
-            leaderboardList[changeIndex] = leaderboardList[i];
-            leaderboardList[i] = temp;
-        }
-    }
-
-    function sortByRatio(descending) {
-        for(var i = 0; i < leaderboardList.length - 1; i++) {
-            var changeIndex = i;
-            var changeValue = getRatio(leaderboardList[i]);
-            for(var j = i+1; j < leaderboardList.length; j++) {
-              if(descending) {
-                if(leaderboardList[j].emissions > changeValue) {
-                    changeValue = getRatio(leaderboardList[j]);
-                    changeIndex = j;
-                  }
-              } else {
-                if(leaderboardList[j].emissions < changeValue) {
-                    changeValue = getRatio(leaderboardList[i]);
-                    changeIndex = j;
-                  }
-              }
-            }
-            var temp = changeValue;
-            leaderboardList[changeIndex] = leaderboardList[i];
-            leaderboardList[i] = temp;
-        }
-    }*/
-
-    /*function orderBy(prop, largest) {
-        if(largest == 0) {
-            return function (a, b) {
-                a = a[prop];
-                b = b[prop];
-              return a < b ? -1 : a > b ? 1 : 0;
-            };
-          } else {
-            return function (a, b) {
-                a = a[prop];
-                b = b[prop];
-              return a > b ? -1 : a < b ? 1 : 0;
-            };
-          }
-    }*/
 
     function sortBy(type) {
-        if(sortByType == type && sortStatus < 2) {
+        if(sortByType === type && sortStatus < 2) {
             orderBy(type,sortStatus);
             setSortStatus(sortStatus + 1);
-        } else if(sortByType == type && sortStatus == 2) {
-            orderBy("ratio", sortStatus)
+        } else if(sortByType === type && sortStatus === 2) {
+            orderBy("ratio", sortStatus);
             setSortStatus(0);
         } else {
             setSortByType(type);
@@ -165,9 +162,25 @@ function LeaderboardPage() {
     function getRatio(user) {
         return 1.0 * getTotalEmissions(user) / getTotalMiles(user);
     }
+    
+    function orderBuy(prop, largest) {
+        if(largest === 0) {
+            return function (a, b) {
+                a = a[prop];
+                b = b[prop];
+              return a < b ? -1 : a > b ? 1 : 0;
+            };
+          } else {
+            return function (a, b) {
+                a = a[prop];
+                b = b[prop];
+              return a > b ? -1 : a < b ? 1 : 0;
+            };
+          }
+    }
 
     useEffect(() => {
-        sortBy('ratio');
+        //sortBy('ratio');
         setSortStatus(0);
       }, []);
 
@@ -178,23 +191,19 @@ function LeaderboardPage() {
           <table id="leaderboard-table">
             <thead>
               <th>Username</th>
-              <th onClick={e => sortBy('ratio')}>Carbon Emissions / Miles Traveled {sortByType == 'ratio' && sortStatus == 1 && <span>{"\u2191"}</span>}{sortByType == 'ratio' && sortStatus == 2 && <span>{"\u2193"}</span>}</th>
-              <th onClick={e => sortBy('emissions')}>Carbon Emissions {sortByType == 'emissions' && sortStatus == 1 && <span>{"\u2191"}</span>}{sortByType == 'emissions' && sortStatus == 2 && <span>{"\u2193"}</span>}</th>
-              <th onClick={e => sortBy('miles')}>Miles Traveled {sortByType == 'miles' && sortStatus == 1 && <span>{"\u2191"}</span>}{sortByType == 'miles' && sortStatus == 2 && <span>{"\u2193"}</span>}</th>
+              <th onClick={e => sortBy('ratio')}>Carbon Emissions / Miles Traveled {sortByType === 'ratio' && sortStatus === 1 && <span>{"\u2191"}</span>}{sortByType === 'ratio' && sortStatus === 2 && <span>{"\u2193"}</span>}</th>
+              <th onClick={e => sortBy('emissions')}>Carbon Emissions {sortByType === 'emissions' && sortStatus === 1 && <span>{"\u2191"}</span>}{sortByType === 'emissions' && sortStatus === 2 && <span>{"\u2193"}</span>}</th>
+              <th onClick={e => sortBy('miles')}>Miles Traveled {sortByType === 'miles' && sortStatus === 1 && <span>{"\u2191"}</span>}{sortByType === 'miles' && sortStatus === 2 && <span>{"\u2193"}</span>}</th>
             </thead>
             <tbody>
-              <tr>
-                <td>marcuscheng123</td>
-                <td>102</td>
-                <td>384823</td>
-                <td>83842</td>
-              </tr>
-              <tr>
-                <td>novakdjokovic22</td>
-                <td>84</td>
-                <td>384894732984823</td>
-                <td>82</td>
-              </tr>
+            {leaderboardList.map((user) => 
+            <tr>
+              <td>{user.username}</td>
+              <td>{getRatio(user)}</td>
+              <td>{getTotalEmissions(user)}</td>
+              <td>{getTotalMiles(user)}</td>
+            </tr>
+            )}  
             </tbody>
           </table>
         </div>

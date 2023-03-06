@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import "./ProfilePage.css";
 
 function ProfilePage() {
     const user = {
@@ -21,6 +22,7 @@ function ProfilePage() {
             },
         ]
     };
+    var [eventShow, setEventShow] = useState(false);
 
     function getTotalEmissions(user) {
         var total = 0;
@@ -38,11 +40,15 @@ function ProfilePage() {
         return total;
     }
 
+    function changeEventShow() {
+        setEventShow(!eventShow);
+    }
+
     return (
-    <div>
+    <div id="profile">
         <h1>Profile</h1>
         <div>
-        <table id="leaderboard-table">
+        <table id="profile-table">
             <tbody>
               <tr>
                 <td>Username</td>
@@ -60,10 +66,12 @@ function ProfilePage() {
                 <td>Total Miles Traveled</td>
                 <td>{getTotalMiles(user)}</td>
               </tr>
-              <tr>
-                <td>Events Attended
-                {user.events.map((event,index) => 
-                  <table>
+              <tr onClick={changeEventShow}>
+                <td>Events Attended {!eventShow && <span>{"\u2193"}</span>}{eventShow && <span>{"\u2191"}</span>}</td>
+                <td>{user.events.length}</td>
+              </tr>
+              {eventShow && user.events.map((event) => 
+                  <table id="events-table">
                   <tr>
                     <td>Name</td>
                     <td>{event.name}</td>
@@ -86,8 +94,6 @@ function ProfilePage() {
                   </tr>
                 </table>
                 )}
-              </td>
-              </tr>
             </tbody>
           </table>
         </div>
