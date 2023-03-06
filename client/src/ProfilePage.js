@@ -1,41 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import UserContext from "./UserContext";
 import "./ProfilePage.css";
+import axios from "axios";
 
 function ProfilePage() {
-    const user = {
-        username: "marcuscheng123",
-        email: "marcusdcheng@gmail.com",
-        events: [
-            {
-                name: "LATC",
-                address: "330 De Neve Dr.",
-                transportation: "Car",
-                distance: 20,
-                carbonOffset: 2933,
-            },
-            {
-                name: "Pauley",
-                address: "330 De Neve Dr.",
-                transportation: "Car",
-                distance: 30,
-                carbonOffset: 2133,
-            },
-        ]
-    };
+    const [email, setEmail] = useState("");
+    const [events, setEvents] = useState([]);
+
+    useEffect(() => {
+        async function fetchData() {
+            const result = await axios.get("http://localhost:8000/get-all-users");
+            console.log(result);
+            result.data.forEach(element => {
+                if(element.username == currentUsername) {
+                    setEmail(element.email);
+                    setEvents(element.events);
+                }
+            });
+        }
+        fetchData();
+    }, [])
+
+    const { currentUsername, setCurrentUsername } = useContext(UserContext);
+
+
     var [eventShow, setEventShow] = useState(false);
 
     function getTotalEmissions(user) {
         var total = 0;
-        for(var i = 0; i < user.events.length; i++) {
-            total += user.events[i].carbonOffset;
+        for(var i = 0; i < user.length; i++) {
+            total += user[i].carbonOffset;
         }
         return total;
     }
 
     function getTotalMiles(user) {
         var total = 0;
-        for(var i = 0; i < user.events.length; i++) {
-            total += user.events[i].distance;
+        for(var i = 0; i < user.length; i++) {
+            total += user[i].distance;
         }
         return total;
     }
@@ -52,25 +54,25 @@ function ProfilePage() {
             <tbody>
               <tr>
                 <td>Username</td>
-                <td>{user.username}</td>
+                <td>{currentUsername}</td>
               </tr>
               <tr>
                 <td>Email</td>
-                <td>{user.email}</td>
+                <td>{email}</td>
               </tr>
               <tr>
                 <td>Total Carbon Emissions</td>
-                <td>{getTotalEmissions(user)}</td>
+                <td>{getTotalEmissions(events)}</td>
               </tr>
               <tr>
                 <td>Total Miles Traveled</td>
-                <td>{getTotalMiles(user)}</td>
+                <td>{getTotalMiles(events)}</td>
               </tr>
               <tr onClick={changeEventShow}>
                 <td>Events Attended {!eventShow && <span>{"\u2193"}</span>}{eventShow && <span>{"\u2191"}</span>}</td>
-                <td>{user.events.length}</td>
+                <td>{events.length}</td>
               </tr>
-              {eventShow && user.events.map((event) => 
+              {eventShow && events.map((event) => 
                   <table id="events-table">
                   <tr>
                     <td>Name</td>

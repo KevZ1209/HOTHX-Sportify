@@ -63,6 +63,21 @@ app.get("/get-all-users", async function(req, res) {
     }
 });
 
+app.get("/get-user-data/:username", async function(req, res) {
+    try {
+        const foundUser = await User.findOne({username: req.params.username})
+        if (foundUser == null) {
+            res.send(false)
+        }
+        else {
+            res.send(foundUser)
+        }
+    }
+    catch (error) {
+        res.send(error)
+    }
+})
+
 app.post("/create-user/:username/:password/:email", async function(req, res) { 
     // returns false if user already exists, true if created successfully
     
@@ -149,22 +164,19 @@ app.post("/add-event", function(req, res) {
 
 app.post("/add-event-to-user", async function(req, res) {
     const eventName = req.body.eventName
+    const eventAddress = req.body.eventAddress
     const username = req.body.username
     const transportation = req.body.transportation
     const carbonOffset = req.body.carbonOffset
     const distance = req.body.distance
 
+    console.log("HEY");
     try {
-      let foundEvent = await Event.findOne({name: eventName})
-      if (foundEvent == null) {
-        // event doesn't exist
-        res.send(false)
-      } else {
         // find the user and insert new event into its array
         try {
           let eventToInsert = {
-            name: foundEvent.name,
-            address: foundEvent.address,
+            name: eventName,
+            address: eventAddress,
             transportation: transportation,
             carbonOffset: carbonOffset,
             distance: distance
@@ -181,7 +193,6 @@ app.post("/add-event-to-user", async function(req, res) {
         } catch (error) {
           res.send(error)
         }
-      }
     } catch(error) {
       res.send(error)
     }
