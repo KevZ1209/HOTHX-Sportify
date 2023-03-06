@@ -6,6 +6,7 @@ import LeaderboardPage from "./LeaderboardPage";
 import LoginPage from "./Login";
 import UserContext from "./UserContext";
 import './App.css';
+import logo from "./logo.png"
 
 function App() {
   const [currentUsername, setCurrentUsername] = useState(null);
@@ -15,6 +16,7 @@ function App() {
       <UserContext.Provider value={{currentUsername, setCurrentUsername}}>
         {currentUsername && (
           <div className="navBar">
+            <img id="logo" src={logo}></img>
             <NavLink
               to="/"
               style={{ textDecoration: "none", marginRight: "0.5rem" }}

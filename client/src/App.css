@@ -21,4 +21,13 @@
 
 .navBar {
     height: 30px;
+    
+}
+
+#logo {
+  position: relative;
+  height: 50px;
+  left: 0px;
+  margin-right: 5px;
+  top: 5px;
 }
