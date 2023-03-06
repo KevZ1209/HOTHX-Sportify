@@ -73,7 +73,7 @@ function LeaderboardPage() {
     function orderBy(prop, largest) {
         console.log(leaderboardList);
         for(var i = 0; i < leaderboardList.length-1; i++) {
-            var changeValue;
+            var changeValue = 0;
             var changeIndex = i;
             if(prop === "miles") {
                 changeValue = getTotalMiles(leaderboardList[i]);
@@ -90,7 +90,11 @@ function LeaderboardPage() {
                     } else if(prop === "emissions" &&  getTotalEmissions(leaderboardList[j]) > changeValue) {
                         changeValue = getTotalEmissions(leaderboardList[j]);
                         changeIndex = j;
+                        console.log(i);
+                        console.log(j);
                         console.log("bye");
+                        console.log(changeValue);
+                        console.log(changeIndex);
                     } else if(prop === "ratio" &&  getRatio(leaderboardList[j]) > changeValue) {
                         console.log(390423);
                         changeValue = getRatio(leaderboardList[j]);
@@ -109,24 +113,32 @@ function LeaderboardPage() {
                     }
               }
             }
-            /*var listCopy = [];
+            var listCopy = [];
             var temp = changeValue;
-            for(var j = 0; j < leaderboardList.length; j++) {
-                if(j === i) {
+            for(var k = 0; k < leaderboardList.length; k++) {
+                if(k === i) {
+                    console.log("one");
                   listCopy.push(temp);
-                } else if(j === changeIndex) {
+                } else if(k === changeIndex) {
                     listCopy.push(leaderboardList[i]);
+                    console.log("two");
                 } else {
-                    listCopy.push(leaderboardList[j]);
+                    listCopy.push(leaderboardList[k]);
+                    console.log("three");
                 }
             }
-            setLeaderboardList(listCopy);*/
-            var temp = changeValue;
+            setLeaderboardList(listCopy);
+            /*var temp = changeValue;
             var listCopy = JSON.parse(JSON.stringify(leaderboardList));
             listCopy[changeIndex] = listCopy[i];
             listCopy[i] = temp;
-            setLeaderboardList(listCopy);
+            setLeaderboardList(listCopy);*/
         }
+        /*var listCopy = [];
+        for(var j = 0; j < leaderboardList.length; j++) {
+            listCopy.push(leaderboardList[leaderboardList.length-1 - j]);
+        }
+        setLeaderboardList(listCopy);*/
     }
 
     function sortBy(type) {
