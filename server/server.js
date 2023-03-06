@@ -63,6 +63,21 @@ app.get("/get-all-users", async function(req, res) {
     }
 });
 
+app.get("/get-user-data/:username", async function(req, res) {
+    try {
+        const foundUser = await User.findOne({username: req.params.username})
+        if (foundUser == null) {
+            res.send(false)
+        }
+        else {
+            res.send(foundUser)
+        }
+    }
+    catch (error) {
+        res.send(error)
+    }
+})
+
 app.post("/create-user/:username/:password/:email", async function(req, res) { 
     // returns false if user already exists, true if created successfully
     
