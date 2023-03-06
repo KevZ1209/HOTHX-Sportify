@@ -123,6 +123,9 @@ function HomePage() {
         {allEventsWithDistance && allEventsWithDistance.map(element => {
             return (<EventCard name={element.name} address={element.address} going={false} distance={Math.round(element.dist)}/>)
         })}
+        {allEventsWithDistance.length === 0 && allEvents && allEvents.map(element => {
+            return (<EventCard name={element.name} address={element.address} going={false} distance={0}/>)
+        })}
     </div>
     );
 }

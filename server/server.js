@@ -154,6 +154,7 @@ app.post("/add-event-to-user", async function(req, res) {
     const carbonOffset = req.body.carbonOffset
     const distance = req.body.distance
 
+    console.log("HEY");
     try {
       let foundEvent = await Event.findOne({name: eventName})
       if (foundEvent == null) {
