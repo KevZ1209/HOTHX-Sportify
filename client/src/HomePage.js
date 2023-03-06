@@ -15,6 +15,7 @@ function HomePage() {
     const [enteredEventAddress, setEnteredEventAddress] = useState("");
     const [enteredEventName, setEnteredEventName] = useState("");
     const [enteredEvent, setEnteredEvent] = useState();
+    const [enteredEventWithDistance, setEnteredEventWithDistance] = useState();
 
     const [calculatingDistances, setCalculatingDistances] = useState(false)
 
@@ -50,6 +51,21 @@ function HomePage() {
         }
         fetchData();
     },[allEvents, userLocation])
+
+    useEffect(()=>{
+        async function fetchData() {
+            if(userLocation && enteredEvent){
+                
+                const result = await axios.post("http://localhost:8000/calculate-distance", {
+                    "origin": userLocation,
+                    "dest": enteredEvent.address
+                })
+                
+                setEnteredEventWithDistance({...enteredEvent, dist: 0.62137119 * result.data / 1000});
+            }
+        }
+        fetchData();
+    },[enteredEvent, userLocation])
 
     return (
     <div>
@@ -103,7 +119,7 @@ function HomePage() {
             </div>
         </div>
         
-        {enteredEvent && (<EventCard name={enteredEvent.name} address={enteredEvent.address} going={false} distance={1000}/>)}
+        {enteredEventWithDistance && (<EventCard name={enteredEventWithDistance.name} address={enteredEventWithDistance.address} going={false} distance={Math.round(enteredEventWithDistance.dist)}/>)}
         {allEventsWithDistance && allEventsWithDistance.map(element => {
             return (<EventCard name={element.name} address={element.address} going={false} distance={Math.round(element.dist)}/>)
         })}
