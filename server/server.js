@@ -106,7 +106,7 @@ app.post("/check-password/:username/:password", async function(req, res) {
         }
         else {
             // return true if passwords match, false otherwise
-            res.send(foundUser.password == password)
+            res.send(foundUser.password === password)
         }
     }
     catch (error) {
