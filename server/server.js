@@ -4,6 +4,8 @@ const app = express()
 const cors = require('cors')
 const bcrypt = require('bcrypt');
 const dotenv = require('dotenv')
+const axios = require('axios')
+const API_KEY = require("./API_KEY");
 
 dotenv.config()
 
@@ -70,7 +72,7 @@ app.post("/create-user/:username/:password/:email", async function(req, res) {
         email: req.params.email,
         events: []
     })
-    
+
     try {
         let foundUser = await User.findOne({username: req.params.username})
         if (foundUser == null) {
@@ -125,11 +127,16 @@ app.get("/get-all-events", async function(req, res) {
     }
 })
 
-app.post("/add-event/:name/:address", async function(req, res) {
-    const newEvent = {
-        name: req.params.name,
-        address: req.params.address,
-    }
+app.post("/add-event", function(req, res) {
+
+    const name = req.body.eventName
+    const address = req.body.address
+
+    const newEvent = new Event({
+        name: name,
+        address: address
+    })
+
     try {
         newEvent.save()
         res.send(true)
@@ -137,10 +144,69 @@ app.post("/add-event/:name/:address", async function(req, res) {
     catch(error) {
         res.send(error)
     }
-    
 
+})
+
+app.post("/add-event-to-user", async function(req, res) {
+    const eventName = req.body.eventName
+    const username = req.body.username
+    const transportation = req.body.transportation
+    const carbonOffset = req.body.carbonOffset
+    const distance = req.body.distance
+
+    try {
+      let foundEvent = await Event.findOne({name: eventName})
+      if (foundEvent == null) {
+        // event doesn't exist
+        res.send(false)
+      } else {
+        // find the user and insert new event into its array
+        try {
+          let eventToInsert = {
+            name: foundEvent.name,
+            address: foundEvent.address,
+            transportation: transportation,
+            carbonOffset: carbonOffset,
+            distance: distance
+          }
+          let foundUser = await User.findOne({username: username})
+          if (foundUser == null) {
+            res.send(false)
+          } else {
+            await foundUser.updateOne(
+              {$push: {events: [eventToInsert]}}
+            )
+            res.send(true)
+          }
+        } catch (error) {
+          res.send(error)
+        }
+      }
+    } catch(error) {
+      res.send(error)
+    }
+  })
+  
+
+
+app.post("/calculate-distance", async function(req, res) {
+    try {
+        const origin = req.body.origin.replace(/ /g,"+")
+        const dest = req.body.dest.replace(/ /g,"+")
+
+        const result = await axios.get("https://maps.googleapis.com/maps/api/distancematrix/json?origins="+origin+"&destinations="+dest+"&key="+API_KEY.API_KEY)
+        console.log(result.data.rows[0].elements[0]);
+        res.send(""+result.data.rows[0].elements[0].distance.value);
+    }
+    catch(error) {
+        res.send("5000000")
+    }
 })
 
 app.listen(8000, function(req, res) {
     console.log("Listening on port 8000")
 })
+
+
+
+// 
