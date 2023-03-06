@@ -90,11 +90,6 @@ function LeaderboardPage() {
                     } else if(prop === "emissions" &&  getTotalEmissions(leaderboardList[j]) > changeValue) {
                         changeValue = getTotalEmissions(leaderboardList[j]);
                         changeIndex = j;
-                        console.log(i);
-                        console.log(j);
-                        console.log("bye");
-                        console.log(changeValue);
-                        console.log(changeIndex);
                     } else if(prop === "ratio" &&  getRatio(leaderboardList[j]) > changeValue) {
                         console.log(390423);
                         changeValue = getRatio(leaderboardList[j]);
@@ -113,32 +108,18 @@ function LeaderboardPage() {
                     }
               }
             }
-            var listCopy = [];
-            var temp = changeValue;
-            for(var k = 0; k < leaderboardList.length; k++) {
-                if(k === i) {
-                    console.log("one");
-                  listCopy.push(temp);
-                } else if(k === changeIndex) {
-                    listCopy.push(leaderboardList[i]);
-                    console.log("two");
-                } else {
-                    listCopy.push(leaderboardList[k]);
-                    console.log("three");
-                }
-            }
-            setLeaderboardList(listCopy);
-            /*var temp = changeValue;
-            var listCopy = JSON.parse(JSON.stringify(leaderboardList));
+            console.log(i);
+            console.log(changeIndex);
+            var temp = leaderboardList[changeIndex];
+            let listCopy = JSON.parse(JSON.stringify(leaderboardList));
+            console.log(leaderboardList);
+            console.log(listCopy);
             listCopy[changeIndex] = listCopy[i];
             listCopy[i] = temp;
-            setLeaderboardList(listCopy);*/
+            console.log(listCopy);
+            setLeaderboardList(listCopy);
+            console.log(leaderboardList);
         }
-        /*var listCopy = [];
-        for(var j = 0; j < leaderboardList.length; j++) {
-            listCopy.push(leaderboardList[leaderboardList.length-1 - j]);
-        }
-        setLeaderboardList(listCopy);*/
     }
 
     function sortBy(type) {
@@ -174,25 +155,9 @@ function LeaderboardPage() {
     function getRatio(user) {
         return 1.0 * getTotalEmissions(user) / getTotalMiles(user);
     }
-    
-    function orderBuy(prop, largest) {
-        if(largest === 0) {
-            return function (a, b) {
-                a = a[prop];
-                b = b[prop];
-              return a < b ? -1 : a > b ? 1 : 0;
-            };
-          } else {
-            return function (a, b) {
-                a = a[prop];
-                b = b[prop];
-              return a > b ? -1 : a < b ? 1 : 0;
-            };
-          }
-    }
 
     useEffect(() => {
-        //sortBy('ratio');
+        sortBy('ratio');
         setSortStatus(0);
       }, []);
 
