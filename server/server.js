@@ -164,6 +164,7 @@ app.post("/add-event", function(req, res) {
 
 app.post("/add-event-to-user", async function(req, res) {
     const eventName = req.body.eventName
+    const eventAddress = req.body.eventAddress
     const username = req.body.username
     const transportation = req.body.transportation
     const carbonOffset = req.body.carbonOffset
@@ -171,16 +172,11 @@ app.post("/add-event-to-user", async function(req, res) {
 
     console.log("HEY");
     try {
-      let foundEvent = await Event.findOne({name: eventName})
-      if (foundEvent == null) {
-        // event doesn't exist
-        res.send(false)
-      } else {
         // find the user and insert new event into its array
         try {
           let eventToInsert = {
-            name: foundEvent.name,
-            address: foundEvent.address,
+            name: eventName,
+            address: eventAddress,
             transportation: transportation,
             carbonOffset: carbonOffset,
             distance: distance
@@ -197,7 +193,6 @@ app.post("/add-event-to-user", async function(req, res) {
         } catch (error) {
           res.send(error)
         }
-      }
     } catch(error) {
       res.send(error)
     }

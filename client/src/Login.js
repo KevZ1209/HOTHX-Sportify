@@ -11,9 +11,6 @@ function LoginPage() {
     const [error, setError] = useState();
     const { currentUsername, setCurrentUsername } = useContext(UserContext);
 
-    /* DEBUG */
-    useEffect(() => setCurrentUsername("charles"))
-    /* DEBUG */
 
     const register = async (e) => {
         e.preventDefault();
@@ -53,7 +50,7 @@ function LoginPage() {
 
     return (
     <div>
-        <h1>Login Page!</h1>
+        <h1>Login Page</h1>
         {currentUsername ? (
             <>
                 <div className="loginBox">

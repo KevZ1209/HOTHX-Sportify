@@ -1,72 +1,21 @@
 import React, { useEffect, useState } from "react";
 import "./LeaderboardPage.css";
+import axios from "axios";
 
 function LeaderboardPage() {
-    var [leaderboardList, setLeaderboardList] = useState([
-        {
-         username: "marcus",
-         email: "marcus@gmail.com",
-         password: "123456",
-         events: [
-             {
-                 name: "Indian Wells",
-                 address: "Indian Wells, CA",
-                 transportation: "carpool",
-                 carbonOffset: 200.0,
-                 distance: 93
-             },
-             {
-                 name: "Billy Joel Concert",
-                 address: "Sofi Stadium, Los Angeles",
-                 transportation: "plane",
-                 carbonOffset: 1000.0,
-                 distance: 10
-             }
-         ]
-        },
-        {
-         username: "kevin",
-         email: "kevin@gmail.com",
-         password: "123456",
-         events: [
-             {
-                 name: "Indian Wells",
-                 address: "Indian Wells, CA",
-                 transportation: "carpool",
-                 carbonOffset: 200.0,
-                 distance: 93
-             },
-             {
-                 name: "US Open",
-                 address: "Flushing Meadows, NY",
-                 transportation: "walk",
-                 carbonOffset: 10.0,
-                 distance: 1000
-             }
-         ]
-        },
-        {
-         username: "charles",
-         email: "charles@gmail.com",
-         password: "123456",
-         events: [
-             {
-                 name: "Wimbledon",
-                 address: "Wimbledon, UK",
-                 transportation: "plane",
-                 carbonOffset: 10000.0,
-                 distance: 6000
-             },
-             {
-                 name: "San Diego Open",
-                 address: "San Diego, CA",
-                 transportation: "public",
-                 carbonOffset: 10.0,
-                 distance: 200
-             }
-         ]
+    var [leaderboardList, setLeaderboardList] = useState([]);
+
+     useEffect(() => {
+        async function fetchData() {
+            const result = await axios.get("http://localhost:8000/get-all-users");
+            console.log(result);
+            if(result.data) {
+                setLeaderboardList(result.data);
+            }
         }
-     ]);
+        fetchData();
+    }, []);
+
     var [sortByType, setSortByType] = useState("ratio");
     var [sortStatus, setSortStatus] = useState(0);
 
@@ -90,11 +39,6 @@ function LeaderboardPage() {
                     } else if(prop === "emissions" &&  getTotalEmissions(leaderboardList[j]) > changeValue) {
                         changeValue = getTotalEmissions(leaderboardList[j]);
                         changeIndex = j;
-                        console.log(i);
-                        console.log(j);
-                        console.log("bye");
-                        console.log(changeValue);
-                        console.log(changeIndex);
                     } else if(prop === "ratio" &&  getRatio(leaderboardList[j]) > changeValue) {
                         console.log(390423);
                         changeValue = getRatio(leaderboardList[j]);
@@ -113,32 +57,18 @@ function LeaderboardPage() {
                     }
               }
             }
-            var listCopy = [];
-            var temp = changeValue;
-            for(var k = 0; k < leaderboardList.length; k++) {
-                if(k === i) {
-                    console.log("one");
-                  listCopy.push(temp);
-                } else if(k === changeIndex) {
-                    listCopy.push(leaderboardList[i]);
-                    console.log("two");
-                } else {
-                    listCopy.push(leaderboardList[k]);
-                    console.log("three");
-                }
-            }
-            setLeaderboardList(listCopy);
-            /*var temp = changeValue;
-            var listCopy = JSON.parse(JSON.stringify(leaderboardList));
+            console.log(i);
+            console.log(changeIndex);
+            var temp = leaderboardList[changeIndex];
+            let listCopy = JSON.parse(JSON.stringify(leaderboardList));
+            console.log(leaderboardList);
+            console.log(listCopy);
             listCopy[changeIndex] = listCopy[i];
             listCopy[i] = temp;
-            setLeaderboardList(listCopy);*/
+            console.log(listCopy);
+            setLeaderboardList(listCopy);
+            console.log(leaderboardList);
         }
-        /*var listCopy = [];
-        for(var j = 0; j < leaderboardList.length; j++) {
-            listCopy.push(leaderboardList[leaderboardList.length-1 - j]);
-        }
-        setLeaderboardList(listCopy);*/
     }
 
     function sortBy(type) {
@@ -174,25 +104,9 @@ function LeaderboardPage() {
     function getRatio(user) {
         return 1.0 * getTotalEmissions(user) / getTotalMiles(user);
     }
-    
-    function orderBuy(prop, largest) {
-        if(largest === 0) {
-            return function (a, b) {
-                a = a[prop];
-                b = b[prop];
-              return a < b ? -1 : a > b ? 1 : 0;
-            };
-          } else {
-            return function (a, b) {
-                a = a[prop];
-                b = b[prop];
-              return a > b ? -1 : a < b ? 1 : 0;
-            };
-          }
-    }
 
     useEffect(() => {
-        //sortBy('ratio');
+        sortBy('ratio');
         setSortStatus(0);
       }, []);
 
@@ -203,9 +117,9 @@ function LeaderboardPage() {
           <table id="leaderboard-table">
             <thead>
               <th>Username</th>
-              <th onClick={e => sortBy('ratio')}>Carbon Emissions / Miles Traveled {sortByType === 'ratio' && sortStatus === 1 && <span>{"\u2191"}</span>}{sortByType === 'ratio' && sortStatus === 2 && <span>{"\u2193"}</span>}</th>
-              <th onClick={e => sortBy('emissions')}>Carbon Emissions {sortByType === 'emissions' && sortStatus === 1 && <span>{"\u2191"}</span>}{sortByType === 'emissions' && sortStatus === 2 && <span>{"\u2193"}</span>}</th>
-              <th onClick={e => sortBy('miles')}>Miles Traveled {sortByType === 'miles' && sortStatus === 1 && <span>{"\u2191"}</span>}{sortByType === 'miles' && sortStatus === 2 && <span>{"\u2193"}</span>}</th>
+              <th>Carbon Emissions / Miles Traveled {sortByType === 'ratio' && sortStatus === 1 && <span>{"\u2191"}</span>}{sortByType === 'ratio' && sortStatus === 2 && <span>{"\u2193"}</span>}</th>
+              <th>Carbon Emissions {sortByType === 'emissions' && sortStatus === 1 && <span>{"\u2191"}</span>}{sortByType === 'emissions' && sortStatus === 2 && <span>{"\u2193"}</span>}</th>
+              <th>Miles Traveled {sortByType === 'miles' && sortStatus === 1 && <span>{"\u2191"}</span>}{sortByType === 'miles' && sortStatus === 2 && <span>{"\u2193"}</span>}</th>
             </thead>
             <tbody>
             {leaderboardList.map((user) => 
