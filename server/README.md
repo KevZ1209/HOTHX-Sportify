@@ -20,6 +20,36 @@ POSTING to `/check-password/kev/password` returns `true` since it's a correct co
 Start Local DB query:
 ```
 db.users.deleteMany({});
+
+db.events.deleteMany({});
+
+db.events.insertMany([
+    {
+        name: "Indian Wells",
+        address: "Indian Wells, CA",
+    },
+    {
+        name: "Billy Joel Concert",
+        address: "Sofi Stadium, Los Angeles",
+    },
+    {
+        name: "US Open",
+        address: "Flushing Meadows, NY",
+    },
+    {
+        name: "Roland Garros",
+        address: "Paris, France",
+    },
+    {
+        name: "Wimbledon",
+        address: "Wimbledon, UK",
+    },
+    {
+        name: "San Diego Open",
+        address: "San Diego, CA",
+    }
+]);
+
 db.users.insertMany([
    {
     username: "marcus",
@@ -30,13 +60,15 @@ db.users.insertMany([
             name: "Indian Wells",
             address: "Indian Wells, CA",
             transportation: "carpool",
-            carbonOffset: 200.0
+            carbonOffset: 200.0,
+            distance: 93
         },
         {
             name: "Billy Joel Concert",
-            address: "330 De Neve Dr, Los Angeles, CA, 90024",
-            transportation: "carpool",
-            carbonOffset: 200.0
+            address: "Sofi Stadium, Los Angeles",
+            transportation: "plane",
+            carbonOffset: 1000.0,
+            distance: 10
         }
     ]
    },
@@ -46,10 +78,18 @@ db.users.insertMany([
     password: "123456",
     events: [
         {
-            eventId: "Indian Wells",
-            distance: "Indian Wells, CA",
+            name: "Indian Wells",
+            address: "Indian Wells, CA",
             transportation: "carpool",
-            carbonOffset: 200.0
+            carbonOffset: 200.0,
+            distance: 93
+        },
+        {
+            name: "US Open",
+            address: "Flushing Meadows, NY",
+            transportation: "walk",
+            carbonOffset: 10.0,
+            distance: 1000
         }
     ]
    },
@@ -58,14 +98,21 @@ db.users.insertMany([
     email: "charles@gmail.com",
     password: "123456",
     events: [
+        {
+            name: "Wimbledon",
+            address: "Wimbledon, UK",
+            transportation: "plane",
+            carbonOffset: 10000.0,
+            distance: 6000
+        },
+        {
+            name: "San Diego Open",
+            address: "San Diego, CA",
+            transportation: "public",
+            carbonOffset: 10.0,
+            distance: 200
+        }
     ]
    }
 ]);
-
-db.events.insertMany([
-    {
-        name: "Indian Wells",
-        address: "Indian Wells, CA",
-    }
-])
 ```
