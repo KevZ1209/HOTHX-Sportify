@@ -9,6 +9,7 @@ function HomePage() {
     const [userLocation, setUserLocation] = useState("");
     const [enteredLocation, setEnteredLocation] = useState("");
     const [allEvents, setAllEvents] = useState([]);
+    const [allEventsWithDistance, setAllEventsWithDistance] = useState([]);
     const [closestEvents, setClosestEvents] = useState([]);
 
     const [enteredEventAddress, setEnteredEventAddress] = useState("");
@@ -31,12 +32,20 @@ function HomePage() {
     useEffect(()=>{
         async function fetchData() {
             if(userLocation && allEvents){
-                console.log("*****");
-                const result = await axios.post("http://localhost:8000/calculate-distance", {
-                    "origin": userLocation,
-                    "dest": allEvents[0].address
-                })
-                console.log(result);
+                
+                const newDistances = [];
+                for (const element of allEvents) {
+                    console.log("*****");
+                    const result = await axios.post("http://localhost:8000/calculate-distance", {
+                        "origin": userLocation,
+                        "dest": element.address
+                    })
+
+                    newDistances.push({...element, dist: 0.62137119 * result.data / 1000});
+                }
+                newDistances.sort((a, b) => { return a.dist - b.dist } )
+                setAllEventsWithDistance(newDistances);
+                setCalculatingDistances(false);
             }
         }
         fetchData();
@@ -95,8 +104,8 @@ function HomePage() {
         </div>
         
         {enteredEvent && (<EventCard name={enteredEvent.name} address={enteredEvent.address} going={false} distance={1000}/>)}
-        {allEvents && allEvents.map(element => {
-            return (<EventCard name={element.name} address={element.address} going={false} distance={1000}/>)
+        {allEventsWithDistance && allEventsWithDistance.map(element => {
+            return (<EventCard name={element.name} address={element.address} going={false} distance={Math.round(element.dist)}/>)
         })}
     </div>
     );
