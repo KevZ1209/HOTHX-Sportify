@@ -168,9 +168,9 @@ function LeaderboardPage() {
           <table id="leaderboard-table">
             <thead>
               <th>Username</th>
-              <th onClick={e => sortBy('ratio')}>Carbon Emissions / Miles Traveled {sortByType === 'ratio' && sortStatus === 1 && <span>{"\u2191"}</span>}{sortByType === 'ratio' && sortStatus === 2 && <span>{"\u2193"}</span>}</th>
-              <th onClick={e => sortBy('emissions')}>Carbon Emissions {sortByType === 'emissions' && sortStatus === 1 && <span>{"\u2191"}</span>}{sortByType === 'emissions' && sortStatus === 2 && <span>{"\u2193"}</span>}</th>
-              <th onClick={e => sortBy('miles')}>Miles Traveled {sortByType === 'miles' && sortStatus === 1 && <span>{"\u2191"}</span>}{sortByType === 'miles' && sortStatus === 2 && <span>{"\u2193"}</span>}</th>
+              <th>Carbon Emissions / Miles Traveled {sortByType === 'ratio' && sortStatus === 1 && <span>{"\u2191"}</span>}{sortByType === 'ratio' && sortStatus === 2 && <span>{"\u2193"}</span>}</th>
+              <th>Carbon Emissions {sortByType === 'emissions' && sortStatus === 1 && <span>{"\u2191"}</span>}{sortByType === 'emissions' && sortStatus === 2 && <span>{"\u2193"}</span>}</th>
+              <th>Miles Traveled {sortByType === 'miles' && sortStatus === 1 && <span>{"\u2191"}</span>}{sortByType === 'miles' && sortStatus === 2 && <span>{"\u2193"}</span>}</th>
             </thead>
             <tbody>
             {leaderboardList.map((user) => 
