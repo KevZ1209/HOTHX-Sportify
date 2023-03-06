@@ -1,72 +1,21 @@
 import React, { useEffect, useState } from "react";
 import "./LeaderboardPage.css";
+import axios from "axios";
 
 function LeaderboardPage() {
-    var [leaderboardList, setLeaderboardList] = useState([
-        {
-         username: "marcus",
-         email: "marcus@gmail.com",
-         password: "123456",
-         events: [
-             {
-                 name: "Indian Wells",
-                 address: "Indian Wells, CA",
-                 transportation: "carpool",
-                 carbonOffset: 200.0,
-                 distance: 93
-             },
-             {
-                 name: "Billy Joel Concert",
-                 address: "Sofi Stadium, Los Angeles",
-                 transportation: "plane",
-                 carbonOffset: 1000.0,
-                 distance: 10
-             }
-         ]
-        },
-        {
-         username: "kevin",
-         email: "kevin@gmail.com",
-         password: "123456",
-         events: [
-             {
-                 name: "Indian Wells",
-                 address: "Indian Wells, CA",
-                 transportation: "carpool",
-                 carbonOffset: 200.0,
-                 distance: 93
-             },
-             {
-                 name: "US Open",
-                 address: "Flushing Meadows, NY",
-                 transportation: "walk",
-                 carbonOffset: 10.0,
-                 distance: 1000
-             }
-         ]
-        },
-        {
-         username: "charles",
-         email: "charles@gmail.com",
-         password: "123456",
-         events: [
-             {
-                 name: "Wimbledon",
-                 address: "Wimbledon, UK",
-                 transportation: "plane",
-                 carbonOffset: 10000.0,
-                 distance: 6000
-             },
-             {
-                 name: "San Diego Open",
-                 address: "San Diego, CA",
-                 transportation: "public",
-                 carbonOffset: 10.0,
-                 distance: 200
-             }
-         ]
+    var [leaderboardList, setLeaderboardList] = useState([]);
+
+     useEffect(() => {
+        async function fetchData() {
+            const result = await axios.get("http://localhost:8000/get-all-users");
+            console.log(result);
+            if(result.data) {
+                setLeaderboardList(result.data);
+            }
         }
-     ]);
+        fetchData();
+    }, []);
+    
     var [sortByType, setSortByType] = useState("ratio");
     var [sortStatus, setSortStatus] = useState(0);
 
