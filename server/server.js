@@ -150,7 +150,10 @@ app.post("/add-event", function(req, res) {
 app.post("/add-event-to-user", async function(req, res) {
     const eventName = req.body.eventName
     const username = req.body.username
-  
+    const transportation = req.body.transportation
+    const carbonOffset = req.body.carbonOffset
+    const distance = req.body.distance
+
     try {
       let foundEvent = await Event.findOne({name: eventName})
       if (foundEvent == null) {
@@ -162,9 +165,9 @@ app.post("/add-event-to-user", async function(req, res) {
           let eventToInsert = {
             name: foundEvent.name,
             address: foundEvent.address,
-            transportation: 'test',
-            carbonOffset: 2,
-            distance: 3
+            transportation: transportation,
+            carbonOffset: carbonOffset,
+            distance: distance
           }
           let foundUser = await User.findOne({username: username})
           if (foundUser == null) {
